@@ -15,10 +15,11 @@ public abstract class User implements CSV {
         this.id = id;
     }
 
-    public User(int id, String FIO, String phone) {
-        this.id = id;
+    public User(String FIO, String phone) {
+        this.id = lastId;
         this.FIO = FIO;
         this.phone = phone;
+        lastId++;
     }
 
     public int getId() {

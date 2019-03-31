@@ -11,8 +11,8 @@ public final class UrUser extends User {
         super(id);
     }
 
-    public UrUser(int id, String FIO, String phone, String registrationDate) {
-        super(id, FIO, phone);
+    public UrUser(String FIO, String phone, String registrationDate) {
+        super(FIO, phone);
         this.registrationDate = registrationDate;
     }
 

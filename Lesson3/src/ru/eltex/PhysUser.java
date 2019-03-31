@@ -11,8 +11,8 @@ public class PhysUser extends User {
         super(id);
     }
 
-    public PhysUser(int id, String FIO, String phone, String address) {
-        super(id, FIO, phone);
+    public PhysUser(String FIO, String phone, String address) {
+        super(FIO, phone);
         this.address = address;
     }
 
