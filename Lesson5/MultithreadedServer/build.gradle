@@ -1,0 +1,40 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+run {
+    standardInput = System.in
+
+    if (project.hasProperty('chooseMain')) {
+        if (chooseMain == 'server'){
+            mainClassName = 'ru.eltex.shoppingsockets.Server'
+        } else if (chooseMain == 'client') {
+            if (project.hasProperty('count')) {
+                args project.getProperty('count')
+            } else {
+                args 10
+            }
+            if (project.hasProperty('drinkType')) {
+                args project.getProperty('drinkType')
+            } else {
+                args tea;
+            }
+            mainClassName = 'ru.eltex.shoppingsockets.Client'
+        }
+    } else {
+        mainClassName = 'ru.eltex.shoppingsockets.Server'
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.google.code.gson:gson:2.8.5'
+}
+
+jar {
+    baseName = 'client-server'
+    version = '0.1'
+}
