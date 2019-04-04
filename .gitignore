@@ -1,8 +1,14 @@
 */out
 */.idea
 */Lesson*.iml
+*/.gradle
+*/build
 Lesson2/Calc/build
 Lesson2/Calc/.gradle
 Lesson2/TestingCollections/out
 Lesson2/TestingCollections/.idea
 Lesson2/TestingCollections/Lesson2.iml
+Lesson5/MultithreadedServer/build
+Lesson5/MultithreadedServer/.gradle
+Lesson5/WebServer/build
+Lesson5/WebServer/.gradle
