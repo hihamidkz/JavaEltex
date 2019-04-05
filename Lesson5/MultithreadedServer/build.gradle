@@ -1,28 +1,15 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
-run {
-    standardInput = System.in
+task server(type: JavaExec) {
+	classpath = sourceSets.main.runtimeClasspath
+	main = 'ru.eltex.shoppingsockets.Server'
+}
 
-    if (project.hasProperty('chooseMain')) {
-        if (chooseMain == 'server'){
-            mainClassName = 'ru.eltex.shoppingsockets.Server'
-        } else if (chooseMain == 'client') {
-            if (project.hasProperty('count')) {
-                args project.getProperty('count')
-            } else {
-                args 10
-            }
-            if (project.hasProperty('drinkType')) {
-                args project.getProperty('drinkType')
-            } else {
-                args tea;
-            }
-            mainClassName = 'ru.eltex.shoppingsockets.Client'
-        }
-    } else {
-        mainClassName = 'ru.eltex.shoppingsockets.Server'
-    }
+task client(type: JavaExec) {
+	classpath = sourceSets.main.runtimeClasspath
+	main = 'ru.eltex.shoppingsockets.Client'
+	args '10', 'tea'
 }
 
 repositories {
