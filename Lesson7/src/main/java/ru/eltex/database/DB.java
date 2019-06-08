@@ -9,93 +9,121 @@ import ru.eltex.users.User;
 import ru.eltex.users.PhysUser;
 
 public class DB {
-	private final static Logger log = Logger.getLogger(DB.class);
-	private final static String url = "jdbc:mysql://localhost:3306/phonebook";
-	private final static String username = "root";
-	private final static String password = "root";
+    private final static Logger log = Logger.getLogger(DB.class);
+    private final static String url = "jdbc:mysql://localhost:3306/phonebook";
+    private final static String username = "root";
+    private final static String password = "root";
 
-	public static List<User> getUsers() {
-		List<User> users = new ArrayList<>();
+    public static void insertUser(PhysUser user) {
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            Statement stmt = conn.createStatement();
 
-		try (Connection conn = DriverManager.getConnection(url, username, password)) {
-			Statement stmt = conn.createStatement();
+            String query = "INSERT INTO fizusers (id, FIO, phone, address) "
+                         + "VALUES ("+ user.getId() + ", '"
+                                     + user.getFIO() + "', '"
+                                     + user.getPhone() + "', '"
+                                     + user.getAddress() + "');";
+            stmt.executeUpdate(query);
+            stmt.close();
+        } catch (SQLException e) {
+            log.error(e.getClass().getSimpleName() + " " + e.getMessage());
+        }
+    }
 
-			String query = "SELECT * FROM fizusers";
-			log.debug("getUsers: " + query);
-			ResultSet rs = stmt.executeQuery(query);
-			while (rs.next()) {
-				int id = rs.getInt(1);
-				String FIO = rs.getString(2);
-				String phone = rs.getString(3);
-				String address = rs.getString(4);
-				User user = new PhysUser(id, FIO, phone, address);
-				users.add(user);
-			}
-			stmt.close();
-		} catch (SQLException e) {
-			log.error(e.getClass().getSimpleName() + " " + e.getMessage());
-		}
+    public static List<User> getUsers() {
+        List<User> users = new ArrayList<>();
 
-		return users;
-	}
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            Statement stmt = conn.createStatement();
 
-	public static User getUserById(int id) {
-		User user = null;
+            String query = "SELECT * FROM fizusers";
+            log.debug("getUsers: " + query);
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                String FIO = rs.getString(2);
+                String phone = rs.getString(3);
+                String address = rs.getString(4);
+                User user = new PhysUser(id, FIO, phone, address);
+                users.add(user);
+            }
+            stmt.close();
+        } catch (SQLException e) {
+            log.error(e.getClass().getSimpleName() + " " + e.getMessage());
+        }
 
-		try (Connection conn = DriverManager.getConnection(url, username, password)) {
-			Statement stmt = conn.createStatement();
+        return users;
+    }
 
-			String query = "SELECT * FROM fizusers WHERE id=" + id + ";";
-			log.debug("getUserById: " + query);
-			ResultSet rs = stmt.executeQuery(query);
-			rs.next();
-			String FIO = rs.getString(2);
-			String phone = rs.getString(3);
-			String address = rs.getString(4);
-			user = new PhysUser(id, FIO, phone, address);
-			stmt.close();
-		} catch (SQLException e) {
-			log.error(e.getClass().getSimpleName() + " " + e.getMessage());
-		}
+    public static User getUserById(int id) {
+        User user = null;
 
-		return user;
-	}
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            Statement stmt = conn.createStatement();
 
-	public static String getPhoneById(int id) {
-		String phone = null;
+            String query = "SELECT * FROM fizusers WHERE id=" + id + ";";
+            log.debug("getUserById: " + query);
+            ResultSet rs = stmt.executeQuery(query);
+            rs.next();
+            String FIO = rs.getString(2);
+            String phone = rs.getString(3);
+            String address = rs.getString(4);
+            user = new PhysUser(id, FIO, phone, address);
+            stmt.close();
+        } catch (SQLException e) {
+            log.error(e.getClass().getSimpleName() + " " + e.getMessage());
+        }
 
-		try (Connection conn = DriverManager.getConnection(url, username, password)) {
-			Statement stmt = conn.createStatement();
+        return user;
+    }
 
-			String query = "SELECT phone FROM fizusers WHERE id=" + id + ";";
-			log.debug("getPhoneById: " + query);
-			ResultSet rs = stmt.executeQuery(query);
-			rs.next();
-			phone = rs.getString(1);
-			stmt.close();
-		} catch (SQLException e) {
-			log.error(e.getClass().getSimpleName() + " " + e.getMessage());
-		}
+    public static String getPhoneById(int id) {
+        String phone = null;
 
-		return phone;
-	}
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            Statement stmt = conn.createStatement();
 
-	public static String getPhoneByName(String fio) {
-		String phone = null;
+            String query = "SELECT phone FROM fizusers WHERE id=" + id + ";";
+            log.debug("getPhoneById: " + query);
+            ResultSet rs = stmt.executeQuery(query);
+            rs.next();
+            phone = rs.getString(1);
+            stmt.close();
+        } catch (SQLException e) {
+            log.error(e.getClass().getSimpleName() + " " + e.getMessage());
+        }
 
-		try (Connection conn = DriverManager.getConnection(url, username, password)) {
-			Statement stmt = conn.createStatement();
+        return phone;
+    }
 
-			String query = "SELECT phone FROM fizusers WHERE FIO='" + fio + "';";
-			log.debug("getPhoneByName: " + query);
-			ResultSet rs = stmt.executeQuery(query);
-			rs.next();
-			phone = rs.getString(1);
-			stmt.close();
-		} catch (SQLException e) {
-			log.error(e.getClass().getSimpleName() + " " + e.getMessage());
-		}
+    public static String getPhoneByName(String fio) {
+        String phone = null;
 
-		return phone;
-	}
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            Statement stmt = conn.createStatement();
+
+            String query = "SELECT phone FROM fizusers WHERE FIO='" + fio + "';";
+            log.debug("getPhoneByName: " + query);
+            ResultSet rs = stmt.executeQuery(query);
+            rs.next();
+            phone = rs.getString(1);
+            stmt.close();
+        } catch (SQLException e) {
+            log.error(e.getClass().getSimpleName() + " " + e.getMessage());
+        }
+
+        return phone;
+    }
+
+    public static void deleteUserById(int id) {
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            Statement stmt = conn.createStatement();
+
+            String query = "DELETE FROM fizusers WHERE ID='" + id + "';";
+            stmt.executeUpdate(query);
+            stmt.close();
+        } catch (SQLException e) {
+            log.error(e.getClass().getSimpleName() + " " + e.getMessage());
+        }
+    }
 }
