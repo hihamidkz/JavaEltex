@@ -1,0 +1,33 @@
+buildscript {
+    repositories {
+        maven { url "http://repo.spring.io/libs-release" }
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.1.3.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'org.springframework.boot'
+
+mainClassName = 'ru.eltex.spring.Application'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.springframework.boot:spring-boot-starter-web:2.1.3.RELEASE"
+    compile "mysql:mysql-connector-java:8.0.15"
+    compile "log4j:log4j:1.2.17"
+	compile "junit:junit:4.12"
+}
+
+jar {
+    baseName = 'phonebook'
+    version =  '0.1.0'
+}
